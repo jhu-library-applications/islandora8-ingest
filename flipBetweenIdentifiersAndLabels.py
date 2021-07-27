@@ -29,12 +29,38 @@ def makeDataFrame(frame, filename):
     frames.append(frame)
 
 
+def addprefix(flip, a, b):
+    keyList = mt.prefixes.keys()
+    if flip == 'id2lab':
+        for key in keyList:
+            print(key, b)
+            if key in b:
+                prefix = mt.prefixes.get(key)
+                print(prefix)
+                a = a.strip()
+                print(a)
+                a = prefix+a
+                return(a)
+    elif flip == 'lab2id':
+        for key in keyList:
+            if key in a:
+                prefix = mt.prefixes.get(key)
+                print(prefix)
+                b = b.strip()
+                print(b)
+                b = prefix+b
+                return(b)
+
 # Split any string columns to list.
 df_1 = pd.read_csv(filename, header=0)
 all_items = []
 for count, row in df_1.iterrows():
     row = row
     for column in mt.columnList:
+        columnValue = row[column]
+        if pd.notnull(columnValue):
+            row[column] = str(columnValue).split('|')
+    for column in mt.prefixColumns:
         columnValue = row[column]
         if pd.notnull(columnValue):
             row[column] = str(columnValue).split('|')
@@ -56,7 +82,7 @@ dict = {}
 for frame in frames:
     for count, row in frame.iterrows():
         id = row['local_id']
-        label = row['auth_name']
+        label = row['name']
         if flip == 'id2lab':
             dict[id] = label
         elif flip == 'lab2id':
@@ -76,9 +102,23 @@ for count, row in df_1.iterrows():
                     value[i] = dict[x]
                     row[column] = value
             row[column] = '|'.join(value)
+    for column in mt.prefixColumns:
+        value = row[column]
+        if value:
+            if isinstance(value, list):
+                for i, x in enumerate(value):
+                    if dict.get(x):
+                        dvalue = dict.get(x)
+                        print(dvalue)
+                        print(x)
+                        new_value = addprefix(flip, dvalue, x)
+                        print(new_value)
+                        value[i] = new_value
+                        row[column] = value
+                row[column] = '|'.join(value)
     all_items.append(row)
 new = pd.DataFrame.from_dict(all_items)
-# print(new.head)
+print(new.head)
 
 # Create CSV for new DataFrame.
 dt = datetime.now().strftime('%Y-%m-%d %H.%M.%S')
