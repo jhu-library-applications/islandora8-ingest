@@ -51,11 +51,11 @@ for filename, frame in frames.items():
     for count, row in frame.iterrows():
         local_id = uuid.uuid4()
         uuids.append(local_id)
-    frame['uuid'] = uuids
+    frame['unique_id'] = uuids
     print("UUIDs added to '{}'".format(filename))
 
     # Create updated spreadsheet in new subfolder.
-    updt_filename = filename+'_withLocalIds.csv'
+    updt_filename = filename+'_withUniqueIds.csv'
     frame.to_csv(path_or_buf=newpath+'/'+updt_filename,
                  index=False)
     print("Updated file '{}' created in '{}'".format(updt_filename, newpath))
