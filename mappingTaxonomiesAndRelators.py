@@ -6,7 +6,7 @@ columnDict = {'noPrefix': ['genre',
 
 bundles = [":person::", ":corporate_body::", ":family::",
            ":collection_object::", ":islandora_object::", ":subject::",
-           ":geolocation::"]
+           ":geo_location::"]
 
 relators = ['relators:abr;', 'relators:acp;', 'relators:act;', 'relators:adi;',
             'relators:adp;', 'relators:aft;', 'relators:anl;', 'relators:anm;',
