@@ -3,11 +3,10 @@ import pandas as pd
 from datetime import datetime
 
 baseURL = 'https://test.digital.library.jhu.edu//jsonapi/taxonomy_term/'
-# taxonomies = ['access_rights', 'copyright_and_use', 'corporate_body',
-#               'family', 'genre', 'geo_location', 'islandora_access',
-#               'islandora_display', 'islandora_media_use', 'islandora_models',
-#               'language', 'person', 'resource_types', 'subject']
-taxonomies = ['person', 'subject']
+taxonomies = ['access_rights', 'copyright_and_use', 'corporate_body',
+              'family', 'genre', 'geo_location', 'islandora_access',
+              'islandora_display', 'islandora_media_use', 'islandora_models',
+              'language', 'person', 'resource_types', 'subject']
 
 
 def fetchData(data):
@@ -18,11 +17,12 @@ def fetchData(data):
         taxDict['taxonomy'] = taxonomy
         taxDict['name'] = name
         authorities = attributes.get('field_authority_link')
-        for authority in authorities:
-            uri = authority.get('uri')
-            source = authority.get('source')
-            if uri is not None:
-                taxDict[source] = uri
+        if authorities:
+            for authority in authorities:
+                uri = authority.get('uri')
+                source = authority.get('source')
+                if uri is not None:
+                    taxDict[source] = uri
         allTax.append(taxDict)
 
 
@@ -55,4 +55,14 @@ print(existingTax.head)
 
 # Create CSV for new DataFrame.
 dt = datetime.now().strftime('%Y-%m-%d%H.%M.%S')
-existingTax.to_csv('existingTaxonomies_'+dt+'.csv')
+filename = 'allExistingTaxonomies_'+dt+'.csv'
+existingTax.to_csv(filename, index=False)
+
+df = pd.read_csv(filename)
+unique = df['taxonomy'].unique()
+print(unique)
+for value in unique:
+    newDF = df.loc[df['taxonomy'] == value]
+    newDF = newDF.dropna(axis=1, how='all')
+    newFile = value+'_'+dt+'.csv'
+    newDF.to_csv(newFile, index=False)
