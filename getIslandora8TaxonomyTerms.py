@@ -2,13 +2,16 @@ import requests
 import pandas as pd
 from datetime import datetime
 
+# Your baseURL: https://islandoralink.edu+//jsonapi/taxonomy_term/
 baseURL = 'https://test.digital.library.jhu.edu//jsonapi/taxonomy_term/'
+
+# Machine names of taxonomies for your islandora 8 instance.
 taxonomies = ['access_rights', 'copyright_and_use', 'corporate_body',
               'family', 'genre', 'geo_location', 'islandora_access',
               'islandora_display', 'islandora_media_use', 'islandora_models',
               'language', 'person', 'resource_types', 'subject']
 
-
+# Function grabs name and uris from taonomy terms.
 def fetchData(data):
     for count, term in enumerate(data):
         taxDict = {}
@@ -26,6 +29,7 @@ def fetchData(data):
         allTax.append(taxDict)
 
 
+# Loop through taxonomies and grab all taxonomy terms, chuck into DataFrame.
 allTax = []
 for taxonomy in taxonomies:
     print(taxonomy)
@@ -53,16 +57,17 @@ for taxonomy in taxonomies:
 existingTax = pd.DataFrame.from_dict(allTax)
 print(existingTax.head)
 
-# Create CSV for new DataFrame.
+# Create CSV for DataFrame containing all taxonomy terms.
 dt = datetime.now().strftime('%Y-%m-%d%H.%M.%S')
 filename = 'allExistingTaxonomies_'+dt+'.csv'
 existingTax.to_csv(filename, index=False)
 
+# Creates CSV for each different taxonomy (subject, person, etc).
 df = pd.read_csv(filename)
 unique = df['taxonomy'].unique()
 print(unique)
 for value in unique:
     newDF = df.loc[df['taxonomy'] == value]
-    newDF = newDF.dropna(axis=1, how='all')
+    newDF = newDF.dropna(axis=1, how='all')  # Deletes blank columns.
     newFile = value+'_'+dt+'.csv'
     newDF.to_csv(newFile, index=False)

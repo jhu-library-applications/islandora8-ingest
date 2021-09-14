@@ -2,9 +2,10 @@ import requests
 import pandas as pd
 from datetime import datetime
 
+# Your baseURL: https://islandoralink.edu+//jsonapi/node/islandora_object'
 baseURL = 'https://test.digital.library.jhu.edu//jsonapi/node/islandora_object'
 
-
+# Function grabs name from islandora_object.
 def fetchData(data):
     for count, item in enumerate(data):
         itemDict = {}
@@ -16,6 +17,7 @@ def fetchData(data):
         all_items.append(itemDict)
 
 
+# Loop through islandora_objects and grab all items, chuck into DataFrame.
 all_items = []
 more_links = True
 nextList = []
@@ -43,4 +45,4 @@ print(all_items.head)
 
 # Create CSV for new DataFrame.
 dt = datetime.now().strftime('%Y-%m-%d%H.%M.%S')
-all_items.to_csv('existingTaxonomies_'+dt+'.csv')
+all_items.to_csv('existingRepositoryItems_'+dt+'.csv')
