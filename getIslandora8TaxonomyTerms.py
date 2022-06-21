@@ -11,7 +11,7 @@ taxonomies = ['access_rights', 'copyright_and_use', 'corporate_body',
               'islandora_display', 'islandora_media_use', 'islandora_models',
               'language', 'person', 'resource_types', 'subject']
 
-# Function grabs name and uris from taonomy terms.
+# Function grabs name and uris from taxonomy terms.
 def fetchData(data):
     for count, term in enumerate(data):
         taxDict = {}
