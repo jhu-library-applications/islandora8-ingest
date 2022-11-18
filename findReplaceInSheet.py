@@ -16,17 +16,17 @@ if args.file2:
 else:
     filename2 = input('Enter metadata filename (including \'.csv\'): ')
 
-df = pd.read_csv(filename)
-dk = pd.read_csv(filename2)
-columns = ['genre', 'digital_publisher']
+metadata = pd.read_csv(filename)
+find_replace = pd.read_csv(filename2)
+columnsToSearch = ['genre', 'digital_publisher']
 
-for index, row in dk.iterrows():
+for index, row in find_replace.iterrows():
     to_delete = row['to_delete']
     to_keep = row['to_keep']
-    for column in columns:
-        df[column] = df[column].str.replace(to_delete, to_keep, regex=False)
+    for column in columnsToSearch:
+        metadata[column] = metadata[column].str.replace(to_delete, to_keep, regex=False)
 
 # Create CSV for new DataFrame.
 filename = filename[:-4]
 dt = datetime.now().strftime('%Y-%m-%d%H.%M.%S')
-df.to_csv('wReplacements_'+filename+'_'+dt+'.csv')
+metadata.to_csv('wReplacements_'+filename+'_'+dt+'.csv')

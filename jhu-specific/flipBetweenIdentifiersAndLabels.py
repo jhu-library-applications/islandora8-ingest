@@ -90,7 +90,7 @@ for frame in frames:
         else:
             print('error')
 
-# Find and replace using dict with labels and ids.
+# Find and replace using new_dict with labels and ids.
 all_items = []
 for count, row in df_1.iterrows():
     row = row

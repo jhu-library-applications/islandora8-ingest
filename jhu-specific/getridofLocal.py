@@ -64,7 +64,7 @@ for frame in frames:
 taxonomies = pd.DataFrame.from_dict(taxonomies)
 print(taxonomies.head)
 
-# Find and replace using dict with labels and ids.
+# Find and replace using new_dict with labels and ids.
 all_items = []
 for index, row in df_1.iterrows():
     print(index)

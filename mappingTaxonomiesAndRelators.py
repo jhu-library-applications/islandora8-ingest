@@ -1,12 +1,19 @@
-columnDict = {'noPrefix': ['genre',
-              'language', 'resource_type', 'title_language'], 'addPrefixes':
-              ['contributors', 'digital_publisher', 'member_of',
-               'subject']}
+columnDict = {'lookUpByID': ['genre', 'publisher_country',
+                             'resource_type', 'spatial_coverage',
+                             'copyright_holder', 'digital_publisher',
+                             'publisher', 'subject'],
+              'lookUpByName': ['access_rights', 'access_terms',
+                               'language', 'member_of', 'title_language'],
+              'relators': ['creator', 'contributor']}
 
 
-bundles = [":person::", ":corporate_body::", ":family::",
-           ":collection_object::", ":islandora_object::", ":subject::",
-           ":geo_location::"]
+quads = {"corporate_body.csv": ":corporate_body::",
+         "family.csv": ":family::",
+         "genre.csv": ":genre::",
+         "geo_location.csv": ":geo_location::",
+         "language.csv": ":language::",
+         "person.csv": ":person::",
+         "subject.csv": ":subject::"}
 
 relators = ['relators:abr;', 'relators:acp;', 'relators:act;', 'relators:adi;',
             'relators:adp;', 'relators:aft;', 'relators:anl;', 'relators:anm;',
