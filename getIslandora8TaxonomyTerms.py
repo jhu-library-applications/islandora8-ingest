@@ -6,29 +6,49 @@ from datetime import datetime
 baseURL = 'https://digital.library.jhu.edu//jsonapi/taxonomy_term/'
 
 # Machine names of taxonomies for your islandora 8 instance.
-taxonomies = ['access_rights', 'copyright_and_use', 'corporate_body',
-              'family', 'genre', 'geo_location', 'islandora_access',
-              'islandora_display', 'islandora_media_use', 'islandora_models',
-              'language', 'person', 'resource_types', 'subject']
+taxonomies = ['corporate_body', 'family', 'genre', 'geo_location', 'islandora_access',
+              'language', 'person', 'subject']
+# extra_taxonomies = ['access_rights', 'copyright_and_use', 'islandora_display', 'islandora_media_use',
+#                     'islandora_models', 'resource_types']
 
 
 # Function grabs name and uris from taxonomy terms.
 def fetch_data(data):
     for count, term in enumerate(data):
         tax_dict = {}
+        skip = ['field_authority_link', 'path', 'changed', 'drupal_internal__tid', 'drupal_internal__revision_id',
+                'revision_created', 'revision_log_message', 'revision_translation_affected', 'langcode', 'status',
+                'content_translation_source', 'content_translation_outdated', 'content_translation_created', 'weight',
+                'default_langcode', 'description']
+        tax_dict['taxonomy'] = term.get('type')
         attributes = term.get('attributes')
-        name = attributes.get('name')
-        unique_id = attributes.get('field_unique_id')
-        tax_dict['taxonomy'] = taxonomy
-        tax_dict['name'] = name
-        tax_dict['unique_id'] = unique_id
+        for k, v in attributes.items():
+            if k not in skip:
+                k = k.replace('field_', '')
+                if isinstance(v, list):
+                    if v:
+                        v = '||'.join(v)
+                        tax_dict[k] = v
+                    else:
+                        tax_dict[k] = None
+                else:
+                    tax_dict[k] = v
+        description = attributes.get('description')
+        if description:
+            description_value = description.get('value')
+            tax_dict['description'] = description_value
         authorities = attributes.get('field_authority_link')
         if authorities:
+            all_authorities = []
             for authority in authorities:
                 uri = authority.get('uri')
                 source = authority.get('source')
                 if uri is not None:
                     tax_dict[source] = uri
+                    authority_string = uri+';'+source
+                    all_authorities.append(authority_string)
+            all_authorities = '||'.join(all_authorities)
+            tax_dict['authority'] = all_authorities
         allTax.append(tax_dict)
 
 
