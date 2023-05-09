@@ -69,7 +69,7 @@ for taxonomy in taxonomies:
         fetch_data(data)
         nextList.clear()
         links = r.get('links')
-        nextDict = links.get('next')
+        nextDict = links.get('next_link')
         if nextDict:
             next_links = nextDict.get('href')
             nextList.append(next_links)
