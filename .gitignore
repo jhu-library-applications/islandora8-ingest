@@ -46,3 +46,5 @@ local/*
 *.pyc
 *.xml
 *.xslx
+secretProd.py
+secret.py
