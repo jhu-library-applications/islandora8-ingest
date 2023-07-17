@@ -12,11 +12,10 @@ else:
     filename = input('Enter metadata filename (including \'.csv\'): ')
 
 
-# taxonomyColumns = ['contributor', 'printer', 'creator', 'digital_publisher', 'publisher', 'subject',
-#                   'spatial_coverage', 'title_language', 'language', 'genre', 'geographer',
-#                   'illustrator', 'editor', 'surveyor', 'cartographer', 'engraver']
+taxonomyColumns = ['contributor', 'printer', 'creator', 'digital_publisher', 'publisher', 'subject',
+                  'spatial_coverage', 'title_language', 'language', 'genre', 'geographer',
+                  'illustrator', 'editor', 'surveyor', 'cartographer', 'engraver']
 
-taxonomyColumns = ['Broker', 'Captains', 'Ship Owners/Investors']
 
 df = pd.read_csv(filename, header=0)
 

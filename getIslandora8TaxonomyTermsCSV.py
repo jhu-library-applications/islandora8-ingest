@@ -7,19 +7,15 @@ baseURL = 'https://digital.library.jhu.edu//jsonapi/taxonomy_term/'
 
 # Machine names of taxonomies for your islandora 8 instance.
 taxonomies = ['corporate_body', 'family', 'genre', 'geo_location', 'islandora_access',
-              'language', 'person', 'subject']
-# extra_taxonomies = ['access_rights', 'copyright_and_use', 'islandora_display', 'islandora_media_use',
-#                     'islandora_models', 'resource_types']
+              'language', 'person', 'subject', 'access_rights', 'copyright_and_use',
+              'islandora_display', 'islandora_media_use', 'islandora_models', 'resource_types']
 
 
 # Function grabs name and uris from taxonomy terms.
 def fetch_data(data):
     for count, term in enumerate(data):
         tax_dict = {}
-        skip = ['field_authority_link', 'path', 'changed', 'drupal_internal__tid', 'drupal_internal__revision_id',
-                'revision_created', 'revision_log_message', 'revision_translation_affected', 'langcode', 'status',
-                'content_translation_source', 'content_translation_outdated', 'content_translation_created', 'weight',
-                'default_langcode', 'description']
+        skip = ['field_authority_link', 'description']
         tax_dict['taxonomy'] = term.get('type')
         attributes = term.get('attributes')
         for k, v in attributes.items():
@@ -69,7 +65,7 @@ for taxonomy in taxonomies:
         fetch_data(data)
         nextList.clear()
         links = r.get('links')
-        nextDict = links.get('next_link')
+        nextDict = links.get('next')
         if nextDict:
             next_links = nextDict.get('href')
             nextList.append(next_links)
