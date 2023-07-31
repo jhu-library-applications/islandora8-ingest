@@ -13,8 +13,8 @@ else:
 
 metadata = pd.read_csv(filename)
 
-baseURL = 'https://digital.library.jhu.edu/taxonomy/term/'
-
+baseURL = 'https://digital.library.jhu.edu//jsonapi/node'
+item = '/islandora_object/'
 
 for index, row in metadata.iterrows():
     mime_type = metadata['field_mime_type']

@@ -1,6 +1,7 @@
 import pandas as pd
 import argparse
 from rdflib import Graph
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--file')
@@ -13,24 +14,24 @@ else:
 
 metadata = pd.read_csv(filename)
 
-baseURL = 'https://digital.library.jhu.edu/taxonomy/term/'
+directory = '/Users/michelle/Documents/GitHub/metadata-export/media/jsonld'
+baseURL = 'https://digital.library.jhu.edu/media/'
 
 
 for index, row in metadata.iterrows():
     mid = row['mid']
     mid = str(mid)
     unique_id = row.get('unique_id')
-    print(unique_id)
+    print(index, unique_id)
     url = baseURL+mid+'?_format=jsonld'
-    print(url)
     g = Graph()
     g.parse(url)
     v = g.serialize(format='json-ld')
     if pd.notnull(unique_id):
         new_file = 'media_'+unique_id+'.jsonld'
     else:
-        new_file = taxonomy+'_'+mid+'.jsonld'
-    with open(new_file, 'w') as f:
+        new_file = 'media_'+mid+'.jsonld'
+    full_file = os.path.join(directory, new_file)
+    with open(full_file, 'w') as f:
         f.write(v)
         f.close()
-    print(index)
